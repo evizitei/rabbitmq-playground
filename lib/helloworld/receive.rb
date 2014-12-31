@@ -7,8 +7,8 @@ rmq_connection = Bunny.new
 rmq_connection.start
 channel = rmq_connection.create_channel
 queue = channel.queue("hello")
+puts "going into listening loop, CTRL+C to quit"
 
-channel.default_exchange.publish("Hello World!", routing_key: queue.name)
-puts "[x] Sent 'Hello World!'"
-
-rmq_connection.close
+queue.subscribe(block: true) do |delivery_info, properties, body|
+  puts " [x] Received -> #{body}"
+end
