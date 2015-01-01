@@ -6,6 +6,7 @@ require 'bunny'
 rmq_connection = Bunny.new
 rmq_connection.start
 channel = rmq_connection.create_channel
+channel.prefetch(1)
 queue = channel.queue("hello")
 puts "going into listening loop, CTRL+C to quit"
 
